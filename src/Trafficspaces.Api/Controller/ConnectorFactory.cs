@@ -46,6 +46,13 @@ namespace Trafficspaces.Api.Controller {
 		/// </summary>
 		private EndPoint AdServerApiEndPoint { get; set; }
 		
+        private Dictionary<string, Connector> connectors { get; set; }
+
+
+        private ConnectorFactory() {
+            connectors = new Dictionary<string, Connector>();
+        }
+
 		/// <summary>
 		/// Initializes a new Connector factory with the specified credentials.
 		/// </summary>
@@ -64,76 +71,89 @@ namespace Trafficspaces.Api.Controller {
 		    AdStoreApiEndPoint = adStoreApiEndPoint;
 		    AdServerApiEndPoint = adServerApiEndPoint;
 		}
-	
+
+        /// <summary>
+        /// Initializes a new Connector that is dedicated to User resources.
+        /// </summary>
+        protected Connector GetConnector(EndPoint endPoint, string resourcePath) {
+            if (!connectors.ContainsKey(resourcePath)) {
+                connectors[resourcePath] = new Connector(endPoint, resourcePath);
+            }
+            return connectors[resourcePath];
+		}
 	
 		/// <summary>
 		/// Initializes a new Connector that is dedicated to User resources.
 		/// </summary>
         public Connector GetUserConnector() {
-            return new Connector(AdStoreApiEndPoint, "/resources/users");
+            return GetConnector(AdStoreApiEndPoint, "/resources/users");
 		}
 
         /// <summary>
         /// Initializes a new Connector that is dedicated to Contact resources.
         /// </summary>
         public Connector GetContactConnector() {
-            return new Connector(AdStoreApiEndPoint, "/resources/contacts");
+            return GetConnector(AdStoreApiEndPoint, "/resources/contacts");
         }
 
         /// <summary>
         /// Initializes a new Connector that is dedicated to Zone resources.
         /// </summary>
         public Connector GetZoneConnector() {
-            return new Connector(AdStoreApiEndPoint, "/resources/zones");
+            return GetConnector(AdStoreApiEndPoint, "/resources/zones");
         }
 
         /// <summary>
         /// Initializes a new Connector that is dedicated to Ad resources.
         /// </summary>
         public Connector GetAdConnector() {
-            return new Connector(AdStoreApiEndPoint, "/resources/ads");
+            return GetConnector(AdStoreApiEndPoint, "/resources/ads");
         }
 
         /// <summary>
         /// Initializes a new Connector that is dedicated to Campaign resources.
         /// </summary>
         public Connector GetCampaignConnector() {
-            return new Connector(AdStoreApiEndPoint, "/resources/campaigns");
+            return GetConnector(AdStoreApiEndPoint, "/resources/campaigns");
         }
 
         /// <summary>
         /// Initializes a new Connector that is dedicated to Targeting-Plan resources.
         /// </summary>
         public Connector GetTargetingPlanConnector() {
-            return new Connector(AdStoreApiEndPoint, "/resources/targetingplans");
+            return GetConnector(AdStoreApiEndPoint, "/resources/targetingplans");
         }
 
         /// <summary>
         /// Initializes a new Connector that is dedicated to Feed resources.
         /// </summary>
         public Connector GetFeedConnector() {
-            return new Connector(AdStoreApiEndPoint, "/resources/feeds");
+            return GetConnector(AdStoreApiEndPoint, "/resources/feeds");
         }
 
         /// <summary>
         /// Initializes a new Connector that is dedicated to Order resources.
         /// </summary>
         public Connector GetOrderConnector() {
-            return new Connector(AdStoreApiEndPoint, "/resources/orders");
+            return GetConnector(AdStoreApiEndPoint, "/resources/orders");
         }
 
         /// <summary>
         /// Initializes a new Connector that is dedicated to Coupon resources.
         /// </summary>
         public Connector GetCouponConnector() {
-            return new Connector(AdStoreApiEndPoint, "/resources/coupons");
+            return GetConnector(AdStoreApiEndPoint, "/resources/coupons");
         }
 
         /// <summary>
         /// Initializes a new Connector that is dedicated to Placement resources.
         /// </summary>
         public PlacementConnector GetPlacementConnector() {
-            return new PlacementConnector(AdServerApiEndPoint, "/resources/placements.json");
+            string resourcePath = "/resources/placements.json";
+            if (!connectors.ContainsKey(resourcePath)) {
+                connectors[resourcePath] = new PlacementConnector(AdServerApiEndPoint, resourcePath);
+            }
+            return (PlacementConnector)connectors[resourcePath];
         }
     }
 }
