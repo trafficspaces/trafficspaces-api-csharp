@@ -58,7 +58,7 @@ namespace Trafficspaces.Api.Controller {
 		/// </summary>
 		/// <param name="subDomain">The subdomain of the ad store account for which API requests will be made</param>
 		/// <param name="apiKey">The api key with which the API requests will be authenticated</param>
-		public ConnectorFactory(string subDomain, string apiKey) {
+		public ConnectorFactory(string subDomain, string apiKey) : this() {
 		    AdStoreApiEndPoint = new EndPoint(string.Format("https://{0}.trafficspaces.com", subDomain), subDomain, apiKey);
 		    AdServerApiEndPoint = new EndPoint("http://ads.trafficspaces.net");
 		}
@@ -67,7 +67,7 @@ namespace Trafficspaces.Api.Controller {
 		/// </summary>
 		/// <param name="subDomain">The subdomain of the ad store account for whisch API requests will be made</param>
 		/// <param name="apiKey">The api key with which the API requests will be authenticated</param>
-		public ConnectorFactory(EndPoint adStoreApiEndPoint, EndPoint adServerApiEndPoint) {
+		public ConnectorFactory(EndPoint adStoreApiEndPoint, EndPoint adServerApiEndPoint) : this() {
 		    AdStoreApiEndPoint = adStoreApiEndPoint;
 		    AdServerApiEndPoint = adServerApiEndPoint;
 		}
