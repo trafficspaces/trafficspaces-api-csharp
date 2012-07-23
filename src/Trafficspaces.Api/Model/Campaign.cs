@@ -35,9 +35,9 @@ namespace Trafficspaces.Api.Model {
         public Dictionary<string, List<LinkedResource>> linked_ads { get; private set; }
         public string name { get; set; }
 
-        
-
         public LinkedResource linked_user { get; set; }
+        
+	    public LinkedResource linked_contact { get; set; }
 	
 	    //******************************
 	    //*** OUTPUT ONLY VARIABLES ****
@@ -52,12 +52,13 @@ namespace Trafficspaces.Api.Model {
             linked_ads = new Dictionary<string, List<LinkedResource>>() { { "linked_ad", new List<LinkedResource>() } };
         }
 
-	    public static Campaign createCampaign(string name, List<LinkedResource> linked_ads = null) {
+	    public static Campaign createCampaign(string name, List<LinkedResource> linked_ads = null, LinkedResource linked_contact = null) {
 		    Campaign campaign = new Campaign();
             campaign.name = name;
             if (linked_ads != null) {
                 campaign.linked_ads["linked_ad"] = linked_ads;
             }
+            campaign.linked_contact = linked_contact;
 		    return campaign;
 	    }
 
